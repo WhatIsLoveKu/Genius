@@ -1,0 +1,57 @@
+:root {
+  --color-brend: #819b57;
+  --color-brend-dark: #465929;
+  --color-primary-dark: #31261a;
+  --color-primary-light: #faf4ea;
+}
+a {
+  text-decoration: none;
+}
+body {
+  color: var(--color-primary-dark);
+  font-family: "Poppins", sans-serif;
+}
+.button {
+  background-color: var(--color-brend);
+  border: 2px solid var(--color-brend);
+  border-radius: 8px;
+}
+
+.button:hover {
+  color: var(--color-brend-dark);
+  background-color: transparent;
+}
+
+.link {
+  color: var(--color-primary-light);
+}
+
+.link:hover {
+  color: var(--color-brend);
+  font-weight: 600;
+}
+
+h1 {
+  color: var(--color-primary-light);
+  text-align: center;
+  font-size: 126px;
+  font-weight: 900;
+}
+
+h1 > *,
+h2 > * {
+  color: var(--color-brend);
+}
+
+#traditions-section ul {
+  background-color: var(--color-brend);
+  color: var(--color-primary-light);
+}
+
+#traditions-section span {
+  color: var(--color-brend);
+}
+
+#traditions-section span.name {
+  text-transform: uppercase;
+}
