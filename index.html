@@ -1,15 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Educational Directory</title>
-  </head>
-  <body>
-    <h1>Educational Directory</h1>
-    <ol>
-      <li><a href="Maket/index.html">Сучасна пекарня (макет Genius)</a></li>
-      <li><a href=""></a></li>
-    </ol>
-  </body>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хакерський злом</title>
+    <style>
+        body {
+            background-color: black;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            padding: 20px;
+        }
+        #terminal {
+            border: 2px solid #00ff00;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            white-space: pre-line;
+        }
+        input {
+            background: black;
+            border: none;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            width: 100%;
+            outline: none;
+        }
+        .error {
+            color: red;
+        }
+        .hidden {
+            display: none;
+        }
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background-color: #00ff00;
+            animation: blink 0.8s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Система безпеки 2.0</h1>
+    <div id="terminal">
+        <p>Вітаємо в системі. Введіть команду:</p>
+        <span class="cursor"></span>
+    </div>
+    <input type="text" id="commandInput" autofocus>
+
+    <script>
+        let stage = 0;
+        let password = "qwerty";  // Пароль для входу
+        let correctFile = "hint.pdf";  // Файл із підказкою
+        let terminal = document.getElementById("terminal");
+        let cursor = document.querySelector(".cursor");
+
+        document.getElementById("commandInput").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                let input = this.value.trim();
+                this.value = "";
+                processCommand(input);
+            }
+        });
+
+        function typeMessage(message, error = false, delay = 50) {
+            return new Promise(resolve => {
+                let p = document.createElement("p");
+                if (error) p.classList.add("error");
+                terminal.insertBefore(p, cursor);
+
+                let i = 0;
+                function type() {
+                    if (i < message.length) {
+                        p.innerHTML += message[i];
+                        i++;
+                        setTimeout(type, delay);
+                    } else {
+                        resolve();
+                    }
+                }
+                type();
+                terminal.scrollTop = terminal.scrollHeight;
+            });
+        }
+
+        async function processCommand(command) {
+            if (stage === 0) {
+                if (command === "login") {
+                    await typeMessage("Введіть пароль:");
+                    stage = 1;
+                } else {
+                    await typeMessage("Помилка: невідома команда", true);
+                }
+            } 
+            else if (stage === 1) {
+                if (command === password) {
+                    await typeMessage("Авторизація успішна! Розпочинаю злом...");
+                    await typeMessage("Помилка: файл зашифровано!", true);
+                    await typeMessage("Введіть команду 'decrypt' для розшифрування.");
+                    stage = 2;
+                } else {
+                    await typeMessage("Неправильний пароль!", true);
+                }
+            } 
+            else if (stage === 2) {
+                if (command === "decrypt") {
+                    await typeMessage("Розшифрування... 10%");
+                    await new Promise(r => setTimeout(r, 1000));
+                    await typeMessage("30%...");
+                    await new Promise(r => setTimeout(r, 1000));
+                    await typeMessage("60%...");
+                    await new Promise(r => setTimeout(r, 1000));
+                    await typeMessage("Розшифровано! Доступні файли: secret_code.docx, hint.pdf, virus.exe");
+                    await typeMessage("Введіть ім'я файлу для відкриття.");
+                    stage = 3;
+                } else {
+                    await typeMessage("Команда невідома!", true);
+                }
+            } 
+            else if (stage === 3) {
+                if (command === correctFile) {
+                    await typeMessage("Файл відкрито! У ньому написано: 'Подарунок у коробці №7' 🎁");
+                    await typeMessage("Злом завершено!");
+                    stage = 4;
+                } else {
+                    await typeMessage("Помилка: файл пошкоджено або не існує!", true);
+                }
+            }
+        }
+    </script>
+</body>
 </html>
